@@ -145,7 +145,7 @@ export function setEntry(date: string, activityId: string, patch: { value?: numb
 }
 
 // ---------- Goals / projects / milestones ----------
-export function saveGoal(g: Partial<Goal> & { title: string }) {
+export function saveGoal(g: Partial<Goal> & { title: string; id?: string | undefined }) {
   const s = getState();
   if (g.id && s.goals.some((x) => x.id === g.id)) {
     commit({ ...s, goals: s.goals.map((x) => (x.id === g.id ? { ...x, ...g, updatedAt: now() } : x)) });
@@ -156,7 +156,7 @@ export function saveGoal(g: Partial<Goal> & { title: string }) {
   return goal.id;
 }
 
-export function saveProject(p: Partial<Project> & { title: string; goalId: string }) {
+export function saveProject(p: Partial<Project> & { title: string; goalId: string; id?: string | undefined }) {
   const s = getState();
   if (p.id && s.projects.some((x) => x.id === p.id)) {
     commit({ ...s, projects: s.projects.map((x) => (x.id === p.id ? { ...x, ...p, updatedAt: now() } : x)) });

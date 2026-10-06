@@ -21,23 +21,23 @@ describe("calculation engine", () => {
   it("week starts Monday", () => expect(week.start).toBe("2026-09-07"));
   it("gym 2/3 = 66.7, 4/3 capped at 100", () => {
     const two = merge(e("2026-09-07", "gym", { completed: true }), e("2026-09-09", "gym", { completed: true }));
-    expect(activityPerformance(ACTIVITY_BY_ID.gym, week, two, after).performance).toBe(66.7);
+    expect(activityPerformance(ACTIVITY_BY_ID["gym"], week, two, after).performance).toBe(66.7);
     const four = merge(two, e("2026-09-10", "gym", { completed: true }), e("2026-09-11", "gym", { completed: true }));
-    const r = activityPerformance(ACTIVITY_BY_ID.gym, week, four, after);
+    const r = activityPerformance(ACTIVITY_BY_ID["gym"], week, four, after);
     expect(r.performance).toBe(100);
     expect(r.actual).toBe(4);
   });
   it("steps use successful days", () => {
     const x = merge(e("2026-09-07", "daily_steps", { value: 7200 }), e("2026-09-08", "daily_steps", { value: 5400 }), e("2026-09-09", "daily_steps", { value: 8100 }));
-    expect(activityPerformance(ACTIVITY_BY_ID.daily_steps, week, x, after).performance).toBe(66.7);
+    expect(activityPerformance(ACTIVITY_BY_ID["daily_steps"], week, x, after).performance).toBe(66.7);
   });
   it("deep work accumulates weekly", () => {
-    const x = merge(...[100, 90, 120, 80].map((v, i) => e(`2026-09-0${7 + i}`, "deep_work", { value: v })));
-    expect(activityPerformance(ACTIVITY_BY_ID.deep_work, week, x, after).performance).toBe(65);
+    const x = merge(...[100, 90, 120, 80].map((v, i) => e(`2026-09-${String(7 + i).padStart(2, "0")}`, "deep_work", { value: v })));
+    expect(activityPerformance(ACTIVITY_BY_ID["deep_work"], week, x, after).performance).toBe(65);
   });
   it("blank is no data, zero is data", () => {
-    expect(activityPerformance(ACTIVITY_BY_ID.protein, week, {}, after).status).toBe("no_data");
-    expect(activityPerformance(ACTIVITY_BY_ID.protein, week, e("2026-09-07", "protein", { value: 0 }), after).performance).toBe(0);
+    expect(activityPerformance(ACTIVITY_BY_ID["protein"], week, {}, after).status).toBe("no_data");
+    expect(activityPerformance(ACTIVITY_BY_ID["protein"], week, e("2026-09-07", "protein", { value: 0 }), after).performance).toBe(0);
   });
   it("weighted averages exclude missing", () => {
     expect(weightedAverage([{ score: 80, weight: 30 }, { score: 60, weight: 40 }, { score: null, weight: 30 }])).toBe(68.6);

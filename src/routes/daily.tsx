@@ -53,7 +53,7 @@ function DailyPage() {
   );
 }
 
-function ActivityRow({ a, date, entry }: { a: Activity; date: string; entry?: DailyEntry }) {
+function ActivityRow({ a, date, entry }: { a: Activity; date: string; entry: DailyEntry | undefined }) {
   return (
     <li className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3">
       <div className="min-w-0">
@@ -65,7 +65,7 @@ function ActivityRow({ a, date, entry }: { a: Activity; date: string; entry?: Da
   );
 }
 
-function CheckboxActivity({ a, date, entry }: { a: Activity; date: string; entry?: DailyEntry }) {
+function CheckboxActivity({ a, date, entry }: { a: Activity; date: string; entry: DailyEntry | undefined }) {
   const v = entry?.completed ?? null;
   const next = v === null ? true : v === true ? false : null;
   const label = v === true ? "Done" : v === false ? "Not done" : "No data";
@@ -88,7 +88,7 @@ function CheckboxActivity({ a, date, entry }: { a: Activity; date: string; entry
   );
 }
 
-function NumericActivity({ a, date, entry }: { a: Activity; date: string; entry?: DailyEntry }) {
+function NumericActivity({ a, date, entry }: { a: Activity; date: string; entry: DailyEntry | undefined }) {
   const stored = entry?.value ?? null;
   const [text, setText] = useState(stored === null ? "" : String(stored));
   useEffect(() => setText(stored === null ? "" : String(stored)), [stored, date]);
