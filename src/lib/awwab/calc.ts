@@ -1,6 +1,6 @@
 // Calculation engine — pure functions. The only place scoring formulas live.
 import { ACTIVITIES, DOMAINS, activitiesFor, targetOn, type Activity, type DomainId } from "./config";
-import { daysInMonth, eligibleDates, fromKey, previousPeriod, type Period } from "./dates";
+import { addDays, daysInMonth, eligibleDates, fromKey, periodFor, previousPeriod, type Period } from "./dates";
 import type { Entries } from "./store";
 
 export type PerfStatus = "no_data" | "below_target" | "on_target";
@@ -131,15 +131,15 @@ export function compare(period: Period, entries: Entries, today: string): Compar
 }
 
 /** Life Scores of each week in a month (only weeks that have started). */
-export function weeklyLifeScoresInMonth(month: Period, entries: Entries, today: string, weekPeriodFor: (k: string) => Period) {
+export function weeklyLifeScoresInMonth(month: Period, entries: Entries, today: string) {
   const out: { label: string; score: number | null }[] = [];
   let k = month.start;
   let i = 1;
   while (k <= month.end && k <= today) {
-    const wp = weekPeriodFor(k);
+    const wp = periodFor("week", k);
     out.push({ label: `Week ${i}`, score: computePeriod(wp, entries, today).lifeScore });
     i++;
-    k = wp.end >= k ? (() => { const d = fromKey(wp.end); d.setDate(d.getDate() + 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; })() : k;
+    k = addDays(wp.end, 1);
   }
   return out;
 }
