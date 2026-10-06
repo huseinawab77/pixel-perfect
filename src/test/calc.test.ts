@@ -42,7 +42,7 @@ describe("calculation engine", () => {
   it("weighted averages exclude missing", () => {
     expect(weightedAverage([{ score: 80, weight: 30 }, { score: 60, weight: 40 }, { score: null, weight: 30 }])).toBe(68.6);
     expect(weightedAverage([{ score: 80, weight: 30 }, { score: 70, weight: 40 }, { score: 100, weight: 30 }])).toBe(82);
-    expect(weightedAverage([80, 70, 90, 60, 80, 70, 100].map((s, i) => ({ score: s, weight: [20, 20, 20, 10, 10, 10, 10][i] })))).toBe(80);
+    expect(weightedAverage([80, 70, 90, 60, 80, 70, 100].map((s, i) => ({ score: s, weight: [20, 20, 20, 10, 10, 10, 10][i] })))).toBe(79); // spec example says 80; its weights compute to 79
   });
   it("trend thresholds", () => {
     expect(trend(78, 70)?.dir).toBe("improving");

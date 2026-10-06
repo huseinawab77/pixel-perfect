@@ -50,7 +50,7 @@ function GoalForm({ goal, onDone }: { goal?: Goal; onDone: () => void }) {
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
-    saveGoal({ id: goal?.id, title: title.trim(), description, domainId: domainId || null, targetDate: targetDate || null });
+    saveGoal({ ...(goal ? { id: goal.id } : {}), title: title.trim(), description, domainId: domainId || null, targetDate: targetDate || null });
     onDone();
   };
   return (
@@ -131,7 +131,7 @@ function ProjectForm({ goalId, project, onDone }: { goalId: string; project?: Pr
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
-    saveProject({ id: project?.id, goalId, title: title.trim(), targetDate: targetDate || null });
+    saveProject({ ...(project ? { id: project.id } : {}), goalId, title: title.trim(), targetDate: targetDate || null });
     onDone();
   };
   return (
